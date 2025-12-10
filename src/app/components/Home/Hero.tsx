@@ -212,21 +212,21 @@ const slides = [
 		subtitle:
 			"Elegant workspaces & commercial interiors that elevate your brand.",
 		image:
-			"https://res.cloudinary.com/djthwunnh/image/upload/v1764151940/office_tidjvy.jpg",
+			"https://res.cloudinary.com/dgulr1hgd/image/upload/v1765360507/9_ospur0.jpg",
 	},
 ];
 
 const textReveal: Variants = {
-	hidden: { y: "50%", opacity: 0.2 },
+	hidden: { y: "40%", opacity: 0 },
 	visible: {
 		y: "0%",
 		opacity: 1,
-		transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+		transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
 	},
 	exit: {
-		y: "50%",
-		opacity: 0.5,
-		transition: { duration: 0.5, ease: [0.4, 0, 1, 1] },
+		y: "40%",
+		opacity: 0,
+		transition: { duration: 0.45, ease: [0.4, 0, 1, 1] },
 	},
 };
 
@@ -241,18 +241,17 @@ export default function HeroBanner() {
 		dots: false,
 		infinite: true,
 		autoplay: true,
-		autoplaySpeed: 6500,
-		speed: 2000,
+		autoplaySpeed: 6000,
+		speed: 1400,
 		fade: true,
 		arrows: false,
 		pauseOnHover: false,
 		beforeChange: (_: number, next: number) => setIndex(next),
 	};
 
-	// Control text animation timing after slide fade
 	useEffect(() => {
 		setShowText(false);
-		const timeout = setTimeout(() => setShowText(true), 800);
+		const timeout = setTimeout(() => setShowText(true), 700);
 		return () => clearTimeout(timeout);
 	}, [index]);
 
@@ -260,7 +259,7 @@ export default function HeroBanner() {
 		<section className="relative w-full min-h-screen overflow-hidden">
 			{/* Background slider */}
 			<div className="absolute inset-0 z-0">
-				<Slider ref={sliderRef} {...settings} className="h-full">
+				<Slider ref={sliderRef} {...settings} className="hero-slider h-full">
 					{slides.map((slide) => (
 						<div key={slide.id}>
 							<div className="relative h-screen w-full">
@@ -268,8 +267,8 @@ export default function HeroBanner() {
 									src={slide.image}
 									alt={slide.title}
 									fill
-									priority={slide.id === 0}
 									sizes="100vw"
+									priority={slide.id === 0}
 									className="object-cover"
 								/>
 							</div>
@@ -278,8 +277,8 @@ export default function HeroBanner() {
 				</Slider>
 			</div>
 
-			{/* Text content */}
-			<div className="relative z-20 flex min-h-screen items-center px-5 sm:px-10 md:px-20 lg:px-28">
+			{/* TEXT LEFT — clean, simple, readable */}
+			<div className="relative z-20 flex min-h-screen items-center px-6 sm:px-12 md:px-20 lg:px-32">
 				<AnimatePresence mode="wait" initial={false}>
 					{showText && (
 						<motion.div
@@ -288,43 +287,42 @@ export default function HeroBanner() {
 							initial="hidden"
 							animate="visible"
 							exit="exit"
-							className="relative max-w-2xl   sm:p-8 rounded-2xl overflow-hidden">
-							<p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-slate-100/90">
+							className="max-w-xl">
+							<p className="mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.3em] text-white drop-shadow-lg">
 								Kasa Interiors
 							</p>
 
-							<h1 className="text-3xl font-bold leading-tight text-white drop-shadow-xl sm:text-4xl md:text-5xl">
+							<h1 className="text-3xl font-bold leading-tight text-white drop-shadow-2xl sm:text-4xl md:text-5xl lg:text-6xl">
 								{current.title}
 							</h1>
 
-							<p className="mt-4 max-w-lg text-sm text-slate-100/90 drop-shadow-md sm:text-base md:text-lg">
+							<p className="mt-4 max-w-lg text-sm text-white/90 drop-shadow-md sm:text-base md:text-lg">
 								{current.subtitle}
 							</p>
 
 							<Link href="/gallery">
 								<motion.button
-									whileHover={{ scale: 1.05, translateY: -1 }}
+									whileHover={{ scale: 1.05 }}
 									whileTap={{ scale: 0.96 }}
-									className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/95 px-7 py-3 text-sm font-semibold text-slate-900 shadow-xl shadow-black/25">
-									See Our Latest Makeovers
-									<span className="text-lg">→</span>
+									className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-slate-900 shadow-lg">
+									See Our Latest Makeovers →
 								</motion.button>
 							</Link>
-							{/* Dark overlay for text */}
-							<div className="pointer-events-none absolute inset-0 -z-10 bg-black/20 " />
 						</motion.div>
 					)}
 				</AnimatePresence>
 			</div>
 
-			{/* Right-side dots */}
+			{/* Right-side minimal dots */}
 			<div className="absolute right-4 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2 sm:right-6">
 				{slides.map((s, i) => (
 					<button
 						key={s.id}
 						onClick={() => sliderRef.current?.slickGoTo(i)}
 						className={`h-2.5 w-2.5 rounded-full transition ${
-							i === index ? "bg-white" : "bg-white/40"
+							i === index
+								? "bg-white shadow-[0_0_0_3px_rgba(255,255,255,0.4)]"
+								: "bg-white/50 hover:bg-white/80"
 						}`}
 					/>
 				))}
